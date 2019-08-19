@@ -13,7 +13,7 @@ historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log # Creates a log file
 batch="${USER}_Job.txt" # The name of the job submission script it'll create each time'
 
 ##Input run numbers##                                                                                                                                                                                             
-inputFile="/home/${USER}/work/JLab/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns" # Path to your input file which is just a list of run numbers, see templates
+inputFile="/home/${USER}/work/JLab/hallc_replay_lt/UTIL_BATCH/InputRunLists/Carbon_ALL" # Path to your input file which is just a list of run numbers, see templates
 
 auger="augerID.tmp"
 
@@ -38,15 +38,17 @@ while true; do
                 cp /dev/null ${batch}
                 ##Creation of batch script for submission##                                    
                 echo "#!/bin/csh" >> ${batch} # Tells your job which shell to run in
-		echo "#PBS -N KaonLT_TEST_${runNum}" >> ${batch} # Name your job                                                                           
-		echo "#PBS -m abe" >> ${batch} # Email you on job start, end or error
-		echo "#PBS -M ${USER}@jlab.org" >>${batch} # Your email address, change it to be what you like
+		echo "#PBS -N KaonLT_SHMS_HODO_CALIB_${runNum}" >> ${batch} # Name your job                                                                           
+		##echo "#PBS -m abe" >> ${batch} # Email you on job start, end or error
+		##echo "#PBS -M aliusmanmughal37@gmail.com" >>${batch} # Your email address, change it to be what you like
 		echo "#PBS -r n" >> ${batch} # Don't re-run if it crashes
-		echo "#PBS -o  /home/${USER}/trq_output/${runNum}.out" >> ${batch} # Output directory and file name, set to what you like
-		echo "#PBS -e  /home/${USER}/trq_output/${runNum}.err" >> ${batch} # Error output directory and file name
+		echo "#PBS -o  /home/${USER}/nobackup/batchErr/${runNum}.out" >> ${batch} # Output directory and file name, set to what you like
+		echo "#PBS -e  /home/${USER}/nobackup/batchErr/${runNum}.err" >> ${batch} # Error output directory and file name
 		echo "date" >> ${batch} 
 		echo "cd /home/${USER}/work/JLab/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/" >> ${batch} # Tell your job to go to the directory with the script you want to run
-		echo "./Batch_Template_Lark.csh ${runNum}" >> ${batch} # Run your script, change this to what you like
+		
+		echo "./HodoCalib_Batch.sh ${runNum} SHMS" >> ${batch} # Run your script, change this to what you like
+		
 		echo "date">>${batch}
 		echo "exit">>${batch} # End of your job script
 		echo "Submitting batch"
