@@ -1,18 +1,34 @@
 #! /bin/bash                                                                                                                                                                                                      
-### Stephen Kay --- University of Regina --- 12/11/19 ###
-##### A batch submission script by Richard, insert the required script you want to batch run on line 51
-##### Modify required resources as needed!
+
+##### A batch submission script by Richard, insert the required script you want to batch run on line 51                                                                                                           
+##### Modify required resources as needed!                                                                                                                                   
+
 echo "Running as ${USER}"
-##Output history file##  
-                                                                                                                                                                                         
+
+SPEC=$1
+
+### Check you have provided the first argument correctly                                                                                                                                                         
+if [[ ! $1 =~ ^("HMS"|"SHMS")$ ]]; then
+    echo "Please specify spectrometer, HMS or SHMS"
+    exit 2
+fi
+### Check if a second argument was provided, if not assume -1, if yes, this is max events                                                                                                                         
+if [[ $2 -eq "" ]]; then
+    MAXEVENTS=-1
+else
+    MAXEVENTS=$2
+fi
+
+##Output history file##                                                                                                                                                                                           
 historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
 
 ##Output batch script##                                                                                                                                                                                           
 batch="${USER}_Job.txt"
 
-##Input run numbers##                                                                                                                                                                                             
-inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/ProductionLH2_ALL"
-## Tape stub                                                                                                                                                                                                      
+##Input run numbers##
+inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Carbon_ALL"
+
+## Tape stub
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
 
 auger="augerID.tmp"
@@ -31,12 +47,7 @@ while true; do
                 ##Run number#                                                                                                                                                                                     
                 runNum=$line
                 tape_file=`printf $MSSstub $runNum`
-		TapeFileSize=$(($(sed -n '3 s/^[^=]*= *//p' < $tape_file)/1000000000))
-		if [[ $TapeFileSize == 0 ]];then
-                    TapeFileSize=1
-                fi
-		echo "Raw .dat file is "$TapeFileSize" GB"
-		tmp=tmp
+                tmp=tmp
                 ##Finds number of lines of input file##                                                                                                                                                           
                 numlines=$(eval "wc -l < ${inputFile}")
                 echo "Job $(( $i + 2 ))/$(( $numlines +1 ))"
@@ -44,22 +55,16 @@ while true; do
                 cp /dev/null ${batch}
                 ##Creation of batch script for submission##                                                                                                                                                       
                 echo "PROJECT: c-kaonlt" >> ${batch}
-                echo "TRACK: analysis" >> ${batch}
-                #echo "TRACK: debug" >> ${batch} ### Use for testing                                                                                                                                              
-                echo "JOBNAME: KaonLT_${runNum}" >> ${batch}
-                # Request disk space depending upon raw file size
-                echo "DISK_SPACE: "$(( $TapeFileSize * 2 ))" GB" >> ${batch}
-		if [[ $TapeFileSize -le 45 ]]; then
-		    echo "MEMORY: 2500 MB" >> ${batch}
-		elif [[ $TapeFileSize -ge 45 ]]; then
-		    echo "MEMORY: 4000 MB" >> ${batch}
-		fi
-		echo "OS: centos7" >> ${batch}
-                echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
+		echo "TRACK: analysis" >> ${batch}
+		#echo "TRACK: debug" >> ${batch}
+                echo "JOBNAME: KaonLT_DCCalib_${SPEC}_${runNum}" >> ${batch}
+		echo "DISK_SPACE: 20 GB" >>${batch} 
+                echo "MEMORY: 2500 MB" >> ${batch}
+                echo "OS: centos7" >> ${batch}
+                echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
-		#echo "TIME: 1" >> ${batch} 
-		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/Full_KaonLT_Batch.sh ${runNum}" >> ${batch}                                                        
-		echo "MAIL: ${USER}@jlab.org" >> ${batch}
+		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/DCCalib_CheckReplay_Batch.sh ${runNum} ${SPEC} ${MAXEVENTS}" >> ${batch} 
+                echo "MAIL: ${USER}@jlab.org" >> ${batch}
                 echo "Submitting batch"
                 eval "jsub ${batch} 2>/dev/null"
                 echo " "
@@ -72,7 +77,7 @@ while true; do
 		for j in "${rnum[@]}"
 		do
 		    if [ $(grep -c $j ${tmp}) -gt 0 ]; then
-			ID=$(echo $(grep $j ${tmp}) | head -c 8) 
+			ID=$(echo $(grep $j ${tmp}) | head -c 8)
 			augerID[$i]=$ID
 			echo "${augerID[@]}" >> $auger
 		    fi	
