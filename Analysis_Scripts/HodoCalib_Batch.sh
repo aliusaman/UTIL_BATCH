@@ -29,18 +29,37 @@ if [[ ${USER} = "cdaq" ]]; then
     echo "Please be sure you want to do this."
     echo "Comment this section out and run again if you're sure."
     exit 2
+<<<<<<< HEAD
 fi
 
+=======
+fi       
+     
+>>>>>>> upstream/develop
 # Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
+<<<<<<< HEAD
 	source /site/12gev_phys/softenv.sh 2.1
+=======
+	source /site/12gev_phys/softenv.sh 2.3
+>>>>>>> upstream/develop
     fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh"
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
+<<<<<<< HEAD
+=======
+elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
+    REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
+    source /site/12gev_phys/softenv.sh 2.3
+    cd "/group/c-kaonlt/hcana/"
+    source "/group/c-kaonlt/hcana/setup.sh" 
+    cd "$REPLAYPATH"
+    source "$REPLAYPATH/setup.sh" 
+>>>>>>> upstream/develop
 elif [[ "${HOSTNAME}" = *"cdaq"* ]]; then
     REPLAYPATH="/home/cdaq/hallc-online/hallc_replay_lt"
 elif [[ "${HOSTNAME}" = *"phys.uregina.ca"* ]]; then
