@@ -41,7 +41,7 @@ elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
 	    source /site/12gev_phys/softenv.sh 2.1
 	elif [[ $CentOSVer = *"7.7"* ]]; then 
 	    source /site/12gev_phys/softenv.sh 2.3
-	    source /apps/root/6.10.02/setroot_CUE.bash
+	    #source /apps/root/6.10.02/setroot_CUE.bash
 	fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh" 
