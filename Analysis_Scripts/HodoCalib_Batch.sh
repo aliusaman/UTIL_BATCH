@@ -29,29 +29,25 @@ if [[ ${USER} = "cdaq" ]]; then
     echo "Please be sure you want to do this."
     echo "Comment this section out and run again if you're sure."
     exit 2
-<<<<<<< HEAD
+
 fi
 
-=======
-fi       
-     
->>>>>>> upstream/develop
+       
+    
 # Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-<<<<<<< HEAD
+
 	source /site/12gev_phys/softenv.sh 2.1
-=======
 	source /site/12gev_phys/softenv.sh 2.3
->>>>>>> upstream/develop
+
     fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh"
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
-<<<<<<< HEAD
-=======
+
 elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     source /site/12gev_phys/softenv.sh 2.3
@@ -59,7 +55,7 @@ elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     source "/group/c-kaonlt/hcana/setup.sh" 
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh" 
->>>>>>> upstream/develop
+
 elif [[ "${HOSTNAME}" = *"cdaq"* ]]; then
     REPLAYPATH="/home/cdaq/hallc-online/hallc_replay_lt"
 elif [[ "${HOSTNAME}" = *"phys.uregina.ca"* ]]; then
@@ -121,7 +117,7 @@ fi
 cd "$REPLAYPATH/DBASE/COIN"
 if [ "$RUNNUMBER" -le "5334" ]; then
     # Copy our normal ones
-    cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
+    cp "$REPLAYPATH/DBASE/COIN/standard_KaonLTCalib.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineAutumn18.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
     # Use sed to replace the strings, 3 means line 3, note for sed to work with a variable we need to use "", \ is an ignore character which we need to get the \ in there syntax "Line# s/TEXT TO REPLACE/REPLACEMENT/" FILE
     sed -i "3 s/OnlineAutumn18.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
@@ -133,7 +129,7 @@ if [ "$RUNNUMBER" -le "5334" ]; then
 fi
 
 if [ "$RUNNUMBER" -ge "5335" -a "$RUNNUMBER" -le "7045" ]; then
-    cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
+    cp "$REPLAYPATH/DBASE/COIN/standard_KaonLTCalib.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineWinter18.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
     sed -i "8 s/OnlineWinter18.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     if [[ $OPT == "HMS" ]]; then
@@ -144,7 +140,7 @@ if [ "$RUNNUMBER" -ge "5335" -a "$RUNNUMBER" -le "7045" ]; then
 fi
 
 if [ "$RUNNUMBER" -ge "7046" ]; then
-    cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
+    cp "$REPLAYPATH/DBASE/COIN/standard_KaonLTCalib.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineSpring19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
     sed -i "13 s/OnlineSpring19.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     if [[ $OPT == "HMS" ]]; then

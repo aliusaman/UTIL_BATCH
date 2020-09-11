@@ -26,8 +26,8 @@ historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
 batch="${USER}_Job.txt"
 
 ##Input run numbers##                                                                                                                                                                                            
-inputFile="/home/${USER}/work/JLab/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns" 
-#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Lumi_ALL"
+#inputFile="/home/${USER}/work/UTIL_BATCH/InputRunLists/inputRuns" 
+inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/test"
 
 ## Tape stub                                                                                                                                                                                                      
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
@@ -56,12 +56,11 @@ while true; do
                 cp /dev/null ${batch}
                 ##Creation of batch script for submission##                                                                                                                                                       
                 echo "PROJECT: c-kaonlt" >> ${batch}
-		#echo "TRACK: analysis" >> ${batch}
-		echo "TRACK: debug" >> ${batch}
+		echo "TRACK: analysis" >> ${batch}
+		#echo "TRACK: debug" >> ${batch}
                 echo "JOBNAME: KaonLT_HodoCalib_${SPEC}_${runNum}" >> ${batch}
 		echo "DISK_SPACE: 20 GB" >>${batch}                                                                                                                                                             
                 echo "MEMORY: 2500 MB" >> ${batch}
-                echo "OS: centos7" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
 		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/HodoCalib_Batch.sh ${runNum} ${SPEC} ${MAXEVENT}" >> ${batch} 
